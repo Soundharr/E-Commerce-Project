@@ -1,0 +1,78 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}
+Shopkart | Product Details
+{% endblock %}
+
+{% block content %}
+{% if products %}
+    {% for product in products %}
+    <section class="bg-light py-4 my-5" style="min-height:600px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="mb-3">{{ product.name }} Details</h4> <!-- Corrected to use product.name -->
+                    <hr style="border-color:#b8bfc2;">
+                </div>
+                <div class="col-4 my-3">
+                    <!--img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.name }}" style="width: 100%; height: 500px; object-fit: cover;"-->
+
+
+                    <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.name }}"
+                         style="max-width: 100%; max-height: 300px; object-fit: contain;">
+                
+                </div>
+                <div class="col-8 my-3">
+                    <h5 class="text-success">{{ product.name }}</h5>
+                    <p>{{ product.description }}</p>
+                    <h6 class="my-2">Rs   <s>{{ product.original_price | stringformat:'d' }}</s></h6>
+                    <h5 class="my-2">Rs   {{ product.selling_price | stringformat:'d' }}</h5>
+                    <!--h6 class="my-2">Current Price : Rs. <s>{{ product.original_price }}</s></h6>
+                    <h5 class="my-2">Offer Price : Rs. {{ product.selling_price }}</h5-->
+                    <p>Vendor Name : <b>{{ product.vendor }}</b></p>
+                    <div class="input-group" style= "width:150px">
+                        <button class="input-group-text bg-success text-light" id="btnMinus"><i class="fa fa-minus"></i></button>
+                        <input type="text"  name="qty" id="txtQty" value="1" class="form-control text-center">
+                        <button class="input-group-text bg-success text-light" id="btnPlus"><i class="fa fa-plus"></i></button>
+                    </div>  
+
+                    <div class="my-3">
+                        <button class="btn btn-primary"><i class="fa fa-cart"></i> Add to Cart</button>
+                        <button class="btn btn-danger"><i class="fa fa-heart"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+{% else %}
+    <p>No product details available.</p>
+{% endif %}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        const btnPlus = document.getElementById("btnPlus");
+        const btnMinus = document.getElementById("btnMinus");
+        const txtQty = document.getElementById("txtQty");
+        
+        btnPlus.addEventListener("click", function() {
+            let qty = parseInt(txtQty.value, 10);
+            qty = isNaN(qty) ? 0 : qty;
+            if (qty < 10) {
+                qty++;
+            }
+            txtQty.value = qty;
+        });
+
+        btnMinus.addEventListener("click", function() {
+            let qty = parseInt(txtQty.value, 10);
+            qty = isNaN(qty) ? 0 : qty;
+            if (qty > 1) {
+                qty--;
+            }
+            txtQty.value = qty;
+        });
+    });
+</script>
+
+{% endblock %}

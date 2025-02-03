@@ -1,0 +1,45 @@
+{% extends 'layouts/main.html' %}
+
+{% block title %}
+Shopkart | Online Shopping
+{% endblock title %}
+
+{% block content %}
+{% load static %}  <!-- Load the static tag -->
+
+<section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">{{ catagory_name }} products</h4>
+                <hr style="border-color:#b8bfc2;">
+            </div>
+        </div>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card my-3">
+                    <!-- Check if product has an image before displaying -->
+                    {% if product.product_image %}
+                    <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.name }}" style="width: 50%; height: 200px; object-fit: cover;">
+                    {% else %}
+                    <!-- Default image when no product image is available -->
+                    <img src="{% static 'images/default-product-image.jpg' %}" class="card-img-top" alt="No image available" style="width: 50%; height: 200px; object-fit: cover;">
+                    {% endif %}
+                    
+                    <a href="{% url 'product_details' catagory_name product.name %}">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">{{ product.name }}</h5>
+                            <span class="float-start old_price">Rs <s>{{ product.original_price | stringformat:'d' }}</s></span>
+                            <span class="float-end new_price">Rs {{ product.selling_price | stringformat:'d' }}</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+                <p>No products found in this category.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>    
+{% endblock content %}

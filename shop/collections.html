@@ -1,0 +1,36 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<h1>Test</h1>
+
+<section class="bg-light py-4 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">Categories</h4>
+                <hr style="border-color: #b8bfc2;">
+            </div>
+            {% for item in catagory %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card my-3">
+                    <!-- Set a fixed width and height for images -->
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="Categories"
+                    style="width: 100%; max-height: 300px; object-fit: cover;">
+                    <!--style="max-width: 100%; max-height: 300px; object-fit: contain;"-->
+
+                    <div class="card-body">
+                        <a href="{% url 'collections' item.name %}">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">{{ item.name }}</h5>
+                                <p class="card-text">{{ item.description }}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
